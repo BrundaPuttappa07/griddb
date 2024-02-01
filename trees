@@ -1,0 +1,147 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node*lchild;
+    struct node*rchild;
+};
+typedef struct node*NODE;
+NODE root = NULL;
+void insert(NODE root);
+void inorder(NODE root);
+void preorder(NODE root);
+void postorder(NODE root);
+void display(NODE root,int);
+
+void main()
+{
+    int ch,i,n,item;
+    for(;;)
+    {
+        printf("\n Tree operations are\n");
+        printf("1.insert nodes\n 2.inorder nodes\n 3.preorder nodes\n 4.postorder nodes\n 5.display\n 6.exit\n");
+        printf("Enter the choice\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1 : printf("Enter the number of elements\n");
+                        scanf("%d",&n);
+                        for(i=0; i<n; i++)
+                        insert(root);
+                    break;
+            case 2 : if(root == NULL)
+                        printf("empty tree");
+                        else
+                        {
+                            printf("Inorder traversal\n");
+                            inorder(root);
+                        }
+                        break;
+            case 3 : if(root == NULL)
+                        printf("empty tree");
+                        else
+                        {
+                            printf("preorder traversal\n");
+                            preorder(root);
+                        }
+                        break;
+            case 4 : if(root == NULL)
+                        printf("empty tree");
+                        else
+                        {
+                            printf("postorder traversal\n");
+                            postorder(root);
+                        }
+                        break;
+            case 5 : if(root == NULL)
+                        printf("empty tree");
+                        else
+                        {
+                            printf("The tree is \n");
+                            display(root,1);
+                        }
+                        break;
+            case 6 : exit(0);
+        default : printf("invalid choice");
+                        }
+                        }
+                        }
+    void insert(NODE root)
+    {
+        NODE nn,prev,curr;
+        nn=(NODE)malloc(sizeof(struct node));
+        printf("Enter the element to be inserted in tree \n");
+        scanf("%d",&nn->data);
+        nn->lchild=nn->rchild=NULL;
+        if(root == NULL)
+        {
+            root = nn;
+            return;
+        }
+        prev = NULL;
+        curr = root;
+        while(curr!=NULL)
+        {
+            if (curr->data==nn->data)
+            {
+                printf("duplication is not possible");
+                free(nn);
+                return;
+            }
+            prev = curr;
+            if(nn->data<curr->data)
+            curr = curr->lchild;
+            else 
+            curr = curr->rchild;
+        }
+    if(nn->data<prev->data)
+    prev->lchild=nn;
+    else
+    prev->rchild=nn;
+    return;
+    }
+    void inorder(NODE root)
+    {
+        if(root!=NULL)
+        {
+            inorder(root->lchild);
+            printf("%d",root->data);
+            inorder(root->rchild);
+        }
+        return;
+    }
+    void preorder(NODE root)
+    {
+        if(root!=NULL)
+        {
+            printf("%d",root->data);
+            preorder(root->lchild);
+            preorder(root->rchild);
+        }
+        return;
+        }
+        void postorder(NODE root)
+    {
+        if(root!=NULL)
+        {
+            postorder(root->lchild);
+            postorder(root->rchild);
+            printf("%d",root->data);
+        }
+        return;
+        }
+        void display(NODE root,int level)
+        {
+            int i;
+            if(root)
+            {
+                display(root->rchild,level+1);
+                printf("\n");
+                for(i=0; i<level;i++)
+                printf("\t");
+                printf("%d",root->data);
+                display(root->lchild,level+1);
+            }
+            return;
+        }
